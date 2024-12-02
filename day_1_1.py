@@ -1,5 +1,5 @@
 # https://adventofcode.com/2024/day/1
-location_file = "./inputs/day_1_1.txt"
+location_file = "./inputs/day_1.txt"
 
 with open(location_file) as f:
     content = f.readlines()
