@@ -1,12 +1,6 @@
 # https://adventofcode.com/2024/day/2
+from utils import read_input_lines
 
-reports_file = "./inputs/day_2.txt"
-
-with open(reports_file) as f:
-    content = f.readlines()
-
-
-reports = [[int(num) for num in line.split()] for line in content]
 
 def check_report_is_increasing_or_decreasing(report:list[int]) -> bool:
     sorted_report_asc = sorted(report)
@@ -24,36 +18,51 @@ def check_adj_levels(report:list[int]) -> bool:
         return False
     return True
 
-new_valid_report_example = [1, 2, 7, 8, 9]
+# non_valid_report_example = [1, 2, 7, 8, 9]
 
-def old_check_report_safety(report:list[int]):
+def check_report_safety(report:list[int]):
     if not check_report_is_increasing_or_decreasing(report):
         return False
     if not check_adj_levels(report):
         return False
     return True
 
-
 def new_check_report_safety(report:list[int]):
     '''Checks if report is safe, if it is safe after removing at most one of the levels'''
-    old_is_safe = old_check_report_safety(report)
+    old_is_safe = check_report_safety(report)
     if old_is_safe:
         return True
     for i in range(len(report)):
         new_report = report.copy()
         new_report.pop(i)
-        if old_check_report_safety(new_report):
+        if check_report_safety(new_report):
             return True
     return False
 
-examples = [[7,6,4,2,1], [1,2,7,8,9], [9,7,6,2,1], [1,3,2,4,5], [8,6,4,4,1], [1,3,6,7,9]]
-for report in examples:
-    is_valid = new_check_report_safety(report)
-    print(f"Report {report} is safe: {is_valid}")
-    
-num_safe_reports = 0
-for report in reports:
-    if new_check_report_safety(report):
-        num_safe_reports += 1
 
-print(f"Number of safe reports: {num_safe_reports}")
+###### main functions ######
+
+def part_one(input_lines:list[str]) -> int:
+    reports = [[int(num) for num in line.split()] for line in input_lines]
+    num_safe_reports = 0
+    for report in reports:
+        if check_report_safety(report):
+            num_safe_reports += 1
+    return num_safe_reports
+
+def part_two(input_lines:list[str]) -> int:
+    reports = [[int(num) for num in line.split()] for line in input_lines]
+    num_safe_reports = 0
+    for report in reports:
+        if new_check_report_safety(report):
+            num_safe_reports += 1
+    return num_safe_reports
+
+if __name__ == "__main__":
+    input_lines = read_input_lines(day=2)
+    
+    total_p1 = part_one(input_lines)
+    print(f"(Part 1) Total: {total_p1}")
+    
+    total_p2 = part_two(input_lines)
+    print(f"(Part 2) Total: {total_p2}")
